@@ -8,5 +8,12 @@
     }],
     "stage-2"
   ],
-  "plugins": ["transform-vue-jsx", "transform-runtime"]
+  "plugins": ["transform-vue-jsx", "transform-runtime",
+      ["prismjs", {
+        "languages": ["javascript", "css", "markup","json","java","shell"],
+        "plugins": [],
+        "theme": "twilight",
+        "css": true
+    }]
+  ]
 }

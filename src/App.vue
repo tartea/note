@@ -11,5 +11,7 @@ export default {
 </script>
 
 <style>
-
+.home-container{
+    height: calc(97vh);
+}
 </style>

@@ -1,22 +1,27 @@
 <template>
   <div class="home">
         <el-row class="home-container">
-            <el-col :span="4" class="home-container">
-                <div class="home-container-tree">第一层笔记</div>
-            </el-col>
-            <el-col :span="4" class="home-container">
-                <div class="grid-content bg-purple-light">笔记列表</div>
+            <el-col :span="8" class="home-container">
+                <div class="home-container-left">
+                    <left-panel></left-panel>
+                </div>
             </el-col>
             <el-col :span="16" class="home-container">
-                <div class="grid-content bg-purple-light">编辑页</div>
+                <div class="home-container-main">
+                   <main-panel></main-panel>
+                </div>
             </el-col>
         </el-row>
   </div>
 </template>
 
 <script>
+import LeftPanel from './panel/LeftPanel'
+import MainPanel from './panel/MainPanel'
+
 export default {
   name: 'Home',
+  components:{LeftPanel,MainPanel},
   data () {
     return {
     
@@ -26,12 +31,12 @@ export default {
 </script>
 
 <style scoped>
-.home-container{
-    height: calc(97vh);
-}
-.home-container-tree{
+
+.home-container-left{
     height: 100%;
-    background: #222530;
+}
+.home-container-main{
+    height: 100%;
 }
 
 </style>>
