@@ -3,12 +3,12 @@
         <el-row class="home-container">
             <el-col :span="8" class="home-container">
                 <div class="home-container-left">
-                    <left-panel></left-panel>
+                    <left-panel @getcontent="getContent"></left-panel>
                 </div>
             </el-col>
             <el-col :span="16" class="home-container">
                 <div class="home-container-main">
-                   <main-panel></main-panel>
+                   <main-panel :note="note"></main-panel>
                 </div>
             </el-col>
         </el-row>
@@ -24,7 +24,12 @@ export default {
   components:{LeftPanel,MainPanel},
   data () {
     return {
-    
+      note:{}
+    }
+  },
+  methods:{
+    getContent(data){
+      this.note = data
     }
   }
 }

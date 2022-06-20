@@ -1,6 +1,6 @@
 <template>
   <div style="height:100%">
-    <v-md-editor v-model="text" class="mark-editor"
+    <v-md-editor v-model="noteContent" class="mark-editor"
         left-toolbar="undo redo clear | h bold italic strikethrough quote | ul ol table hr | link image code tip | save " 
         @upload-image="handleUploadImage" :disabled-menus="[]"
         @save="saveContent"
@@ -14,6 +14,7 @@
 <script>
 export default {
     name: "EditComponent",
+    props:['noteContent'],
     data(){
         //自定义工具栏插入内容
         // this.toolbar = {
@@ -36,7 +37,6 @@ export default {
         //     }
         // };
         return {
-            text:'',
             titles: []
         }
     },

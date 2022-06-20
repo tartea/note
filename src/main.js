@@ -19,6 +19,9 @@ import '@kangc/v-md-editor/lib/plugins/copy-code/copy-code.css';
 //高亮
 import Prism from 'prismjs';
 
+//ajax请求
+import axios from 'axios'
+
 VueMarkdownEditor.use(vuepressTheme, {
   Prism,
   // 扩展语法类型
@@ -27,7 +30,7 @@ VueMarkdownEditor.use(vuepressTheme, {
   },
   config: {
     toc: {
-      includeLevel: [1,2,3,4,5,6]
+      includeLevel: [1, 2, 3, 4, 5, 6]
     },
   },
   extend(md) {
@@ -45,6 +48,6 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
-  components: { App },
+  components: {App},
   template: '<App/>'
 })

@@ -2,8 +2,10 @@
   <div>
        <ul class="note-folder-content-list">
         <li v-for="(node,index) in noteData" :class="selectedNode==index?'note-folder-content-node-selected':''" 
-        :key="index" class="note-folder-content-node" @click="handleNodeClick(node,index)">
-            {{node.label}}
+        :key="node.id" class="note-folder-content-node" @click="handleNodeClick(node,index)">
+            <slot v-bind:node="node">
+              {{node.title}}
+            </slot>
         </li>
     </ul>
   </div>
@@ -20,9 +22,8 @@ export default {
     },
     methods:{
          handleNodeClick(data,index) {
-            console.log(data);
             this.selectedNode = index
-            this.$emit('clicknode')
+            this.$emit('clicknode',data)
         }
     }
 
