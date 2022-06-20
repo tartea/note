@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-function mock(url, method = 'get') {
+export function mock(url, method = 'get') {
   const service = axios.create({
     baseURL: 'http://localhost:8080', // 设置统一的请求前缀
     timeout: 10000, // 设置统一的超时时长
@@ -10,4 +10,11 @@ function mock(url, method = 'get') {
   return service({url: prefixUrl + url, method: method})
 }
 
-export default mock;
+export function request(url, method = 'get') {
+  const service = axios.create({
+    baseURL: 'http://localhost:7777', // 设置统一的请求前缀
+    timeout: 10000, // 设置统一的超时时长
+  });
+
+  return service({url: url, method: method})
+}
