@@ -8,6 +8,7 @@
             <div>
               <span style="color: #7084A4;font-size: 12px;">个人笔记</span>
               <span style="color:greenyellow" @click="addNoteFolder">增加</span>
+              <note-folder-dialog :visible.sync="visible"></note-folder-dialog>
             </div>
             <list-component :note-data="noteFolderData" @clicknode="clickFolderNode"></list-component>
           </div>
@@ -24,26 +25,24 @@
 
 <script>
 import ListComponent from '../list/ListComponent.vue'
+import NoteFolderDialog from '../note/NoteFolder.vue';
 import { mock, request } from '../../util/ajaxUtil';
 import axios from 'axios';
 export default {
   name: "LeftPanel",
-  components: { ListComponent },
+  components: { ListComponent, NoteFolderDialog },
   data() {
     return {
       noteFolderData: [],
-      noteFileData: []
+      noteFileData: [],
+      visible: false
 
     }
   },
   methods: {
     //增加文件夹
     addNoteFolder() {
-      axios.post('/api/saveNoteFolder',{title:"测试"}).then(function (response) {
-        console.log(response.data);
-      }, response => {
-        console.log("文件保存失败");
-      });
+      this.visible = true;
     },
     // 点击文件夹
     clickFolderNode() {
@@ -60,7 +59,10 @@ export default {
       mock('/noteContent.json').then(response => {
         this.$emit("getcontent", response.data)
       }, response => {
-        console.log("获取笔记失败");
+        this.$message({
+          message: '请求失败',
+          type: 'error'
+        });
       });
     }
   },
@@ -69,11 +71,15 @@ export default {
     const _self = this;
     axios.get('/api/queryFolderTree').then(function (response) {
       const res = response.data;
-      if(res.success == true){
+      if (res.success == true) {
         _self.noteFolderData = res.data;
       }
     }, response => {
-      this.noteFolderData = []
+      this.noteFolderData = [];
+      this.$message({
+        message: '请求失败',
+        type: 'error'
+      });
     });
 
 
