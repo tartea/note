@@ -21,6 +21,23 @@ import Prism from 'prismjs';
 
 //ajax请求
 import axios from 'axios'
+// 添加响应拦截器
+axios.interceptors.response.use(function (response) {
+  if(response.data && response.data.success == true){
+    return response.data;
+  }
+  _self.$message({
+    message: '请求失败',
+    type: 'error'
+  });
+  return Promise.reject(error);
+}, function (error) {
+  _self.$message({
+    message: '请求失败',
+    type: 'error'
+  });
+  return Promise.reject(error);
+});
 
 VueMarkdownEditor.use(vuepressTheme, {
   Prism,

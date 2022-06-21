@@ -8,14 +8,21 @@
             <div>
               <span style="color: #7084A4;font-size: 12px;">个人笔记</span>
               <span style="color:greenyellow" @click="addNoteFolder">增加</span>
-              <note-folder-dialog :visible.sync="visible"></note-folder-dialog>
+              <!-- 增加文件夹 -->
+              <note-folder-dialog :folderVisible.sync="folderVisible" @updatodetree="updateNodeTree">
+              </note-folder-dialog>
             </div>
             <list-component :note-data="noteFolderData" @clicknode="clickFolderNode"></list-component>
           </div>
         </div>
       </el-col>
+      <!-- 笔记目录 -->
       <el-col :span="12" class="home-container">
         <div class="note-file">
+          <span style="color:greenyellow" @click="addNoteFile">增加</span>
+          <!-- 增加笔记 -->
+          <note-file-dialog :fileVisible.sync="fileVisible" :selectedFolderId.sync="selectedFolderId"
+            @updafiletree="updateFileTree"></note-file-dialog>
           <list-component :note-data="noteFileData" @clicknode="clickFileNode"></list-component>
         </div>
       </el-col>
@@ -26,63 +33,64 @@
 <script>
 import ListComponent from '../list/ListComponent.vue'
 import NoteFolderDialog from '../note/NoteFolder.vue';
-import { mock, request } from '../../util/ajaxUtil';
+import NoteFileDialog from '../note/NoteFile.vue';
 import axios from 'axios';
 export default {
   name: "LeftPanel",
-  components: { ListComponent, NoteFolderDialog },
+  components: { ListComponent, NoteFolderDialog, NoteFileDialog },
   data() {
     return {
       noteFolderData: [],
       noteFileData: [],
-      visible: false
-
+      folderVisible: false,
+      fileVisible: false,
+      selectedFolderId: '',
+      selectedFileId: ''
     }
   },
   methods: {
     //增加文件夹
     addNoteFolder() {
-      this.visible = true;
+      this.folderVisible = true;
+    },
+    //增加笔记
+    addNoteFile() {
+      this.fileVisible = true;
     },
     // 点击文件夹
-    clickFolderNode() {
+    clickFolderNode(node) {
+      if (this.selectedFolderId == node.id) {
+        return;
+      }
+      this.selectedFolderId = node.id;
       //获取具体的笔记
-      mock('/noteFileTree.json').then(response => {
-        this.noteFileData = response.data.noteFileTree
-      }, response => {
-        this.noteFileData = []
+      this.updateFileTree()
+    },
+    //获取笔记内容
+    clickFileNode(note) {
+      if(this.selectedFileId == note.id){
+        return;
+      }
+      // 将笔记传给父组件
+      this.$emit("getcontent", note.id)
+    },
+    //加载文件夹目录
+    updateNodeTree() {
+      const _self = this;
+      axios.get('/api/queryFolderTree').then(function (response) {
+        _self.noteFolderData = response.data;
       });
     },
-
-    clickFileNode() {
-      //获取笔记内容
-      mock('/noteContent.json').then(response => {
-        this.$emit("getcontent", response.data)
-      }, response => {
-        this.$message({
-          message: '请求失败',
-          type: 'error'
-        });
+    //加载笔记目录
+    updateFileTree() {
+      const _self = this;
+      axios.get('/api/queryNoteFileList?folderId=' + this.selectedFolderId).then(function (response) {
+        _self.noteFileData = response.data;
       });
     }
   },
   mounted() {
-    //加载笔记目录
-    const _self = this;
-    axios.get('/api/queryFolderTree').then(function (response) {
-      const res = response.data;
-      if (res.success == true) {
-        _self.noteFolderData = res.data;
-      }
-    }, response => {
-      this.noteFolderData = [];
-      this.$message({
-        message: '请求失败',
-        type: 'error'
-      });
-    });
-
-
+    this.updateNodeTree();
   }
 }
 </script>

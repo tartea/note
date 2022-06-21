@@ -10,11 +10,11 @@ export function mock(url, method = 'get') {
   return service({url: prefixUrl + url, method: method})
 }
 
-export function request(url, method = 'get') {
+export function get(url) {
   const service = axios.create({
-    baseURL: 'http://localhost:7777', // 设置统一的请求前缀
     timeout: 10000, // 设置统一的超时时长
+    method: 'get'
   });
 
-  return service({url: url, method: method})
+  return service({url: url})
 }

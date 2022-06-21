@@ -1,8 +1,8 @@
 <template>
     <div>
-        <el-dialog title="" :visible.sync="folderVisible">
+        <el-dialog title="新建笔记" :visible.sync="fileVisible">
             <el-form :model="form">
-                <el-form-item label="新建文件夹" :label-width="formLabelWidth">
+                <el-form-item label="笔记名称" :label-width="formLabelWidth">
                     <el-input v-model="form.title" autocomplete="off"></el-input>
                 </el-form-item>
             </el-form>
@@ -17,8 +17,8 @@
 <script>
 import axios from 'axios';
 export default {
-    name: 'NoteFolder',
-    props: ['folderVisible'],
+    name: 'NoteFile',
+    props: ['fileVisible', 'selectedFolderId'],
     data() {
         return {
             form: {
@@ -33,18 +33,19 @@ export default {
         },
         addNoteFolder() {
             const _self = this;
-            axios.post('/api/saveNoteFolder', this.form).then(function (response) {
+            axios.post('/api/saveNoteFile', Object.assign(this.form, {folderId:this.selectedFolderId})).then(function (response) {
                 _self.$message({
                     message: '添加成功',
                     type: 'success'
                 });
-                _self.$emit("updatodetree")
+                _self.$emit("updafiletree")
             });
+
             this.clearFormData()
         },
         // 清空数据
         clearFormData() {
-            this.$emit('update:folderVisible', false);
+            this.$emit('update:fileVisible', false);
             this.form.title = ''
 
         }
