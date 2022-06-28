@@ -1,7 +1,7 @@
 <template>
   <div style="height:100%">
     <div>
-      分享，推送博客{{ noteId }}
+      预留位置，做分享，推送博客
     </div>
     <edit-component :note-id="noteId"></edit-component>
   </div>

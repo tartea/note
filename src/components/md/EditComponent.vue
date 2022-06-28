@@ -88,7 +88,7 @@ export default {
         getNoteContent() {
             const _self = this;
             axios.get('/api/getNoteContent?noteId=' + this.noteId).then(function (response) {
-                _self.content = response.data
+                _self.content = response.data || ""
             });
         }
     },

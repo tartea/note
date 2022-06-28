@@ -4,9 +4,17 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
+
+//右键菜单
+import Contextmenu from "vue-contextmenujs"
+Vue.use(Contextmenu);
+
 //引入ui
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+
+//引入iconfont
+import './assets/iconfont.css'
 
 //引入md
 import VueMarkdownEditor from '@kangc/v-md-editor';
@@ -23,19 +31,15 @@ import Prism from 'prismjs';
 import axios from 'axios'
 // 添加响应拦截器
 axios.interceptors.response.use(function (response) {
-  if(response.data && response.data.success == true){
+  if (response.data && response.data.success == true) {
     return response.data;
   }
-  _self.$message({
+  ElementUI.Message({
     message: '请求失败',
     type: 'error'
   });
-  return Promise.reject(error);
+  throw new Error("error!");
 }, function (error) {
-  _self.$message({
-    message: '请求失败',
-    type: 'error'
-  });
   return Promise.reject(error);
 });
 
@@ -65,6 +69,6 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
-  components: {App},
+  components: { App },
   template: '<App/>'
 })
